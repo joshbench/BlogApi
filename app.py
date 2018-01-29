@@ -5,15 +5,23 @@ from sqlite3 import Error
 
 app = Flask(__name__)
 
-
-
 ## Accepts 'body' and 'title' elements in json, and insterts
 ## them into the db
 @app.route('/post', methods=['POST'])
 def create_post():
+    ## scrape title and body from request
     post_data = request.get_json()
-    # Need to have this write to the db instead of printing
-    print(post_data)
+    title = post_data['title']
+    body = post_data['body']
+    ## Set up a sqlite connection
+    con = sqlite3.connect(r'blog.db')
+    ## Create a cursor to execute the query
+    cur = con.cursor()
+    ## the post_id auto-iterates, so insert title and body
+    cur.execute("INSERT INTO posts (title, body) VALUES (?,?);", (title, body))
+    ## commit and close db connection
+    con.commit()
+    con.close()
     return 'json posted'
 
 ## Gets all posts from the db, no parameters
@@ -25,6 +33,7 @@ def get_posts():
     cur = con.cursor()
     cur.execute("SELECT * FROM posts;")
     all_posts = (cur.fetchall())
+    con.close()
     ## return the result as json
     return json.dumps(all_posts)
 
