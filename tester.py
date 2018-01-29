@@ -2,7 +2,7 @@ import json, os
 
 from urllib.request import Request, urlopen
 
-URL = 'http://localhost:8080/post'
+URL = 'http://localhost/post'
 
 message = {
     'title': 'Title stuffs',
