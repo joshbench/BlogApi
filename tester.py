@@ -5,7 +5,7 @@ from urllib.request import Request, urlopen
 URL = 'http://localhost:8080/post'
 
 message = {
-    'title': 'body',
+    'title': 'Title stuffs',
     'body': 'content'
 }
 header = {

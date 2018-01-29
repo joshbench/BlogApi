@@ -22,7 +22,10 @@ def create_post():
     ## commit and close db connection
     con.commit()
     con.close()
-    return 'json posted'
+    result = { 
+        'result': 'success'
+    }
+    return json.dumps(result)
 
 ## Gets all posts from the db, no parameters
 @app.route('/posts', methods=['GET'])
@@ -38,4 +41,4 @@ def get_posts():
     return json.dumps(all_posts)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=80)
