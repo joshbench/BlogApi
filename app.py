@@ -1,7 +1,11 @@
 from flask import Flask, request
 import os, json
+import sqlite3
+from sqlite3 import Error
 
 app = Flask(__name__)
+
+
 
 ## Accepts 'body' and 'title' elements in json, and insterts
 ## them into the db
@@ -15,13 +19,14 @@ def create_post():
 ## Gets all posts from the db, no parameters
 @app.route('/posts', methods=['GET'])
 def get_posts():
-    # placeholder json while I configure the db
-    message = {
-        'uid': '11289364',
-        'title': 'title',
-        'body': 'content'
-    }
-    return json.dumps(message)
+    ## Set up a sqlite connection
+    con = sqlite3.connect(r'blog.db')
+    ## Create a cursor to execute the query
+    cur = con.cursor()
+    cur.execute("SELECT * FROM posts;")
+    all_posts = (cur.fetchall())
+    ## return the result as json
+    return json.dumps(all_posts)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080)
